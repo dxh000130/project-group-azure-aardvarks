@@ -1,0 +1,6 @@
+.container-content-recommendation{
+    display: flex;
+    flex-direction: row;
+    place-content: center;
+    flex-wrap: nowrap;
+}
