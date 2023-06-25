@@ -12,13 +12,23 @@ import Form from "react-bootstrap/Form";
  * @constructor
  */
 function PlaylistTemplate(props){
+
     const [cover, setCover] = useState('')
+    useEffect(()=>{
+        if (props.currentcover!== undefined){
+            setCover(props.currentcover)
+        }
+    },[props.currentcover])
+
     const [isPrivate, setIsPrivate] = useState(false)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const {userDetail, newUserPlaylist,updateUserPlaylist} = useContext(UserContext)
-
-
+    function handelCancel(e) {
+        setCover("")
+        setIsPrivate(false)
+        props.onClose()
+    }
     function handleFileSelect(e) {
         const file = e.target.files[0];
         const maxFileSize = 5 * 1024 * 1024; // 5MB
@@ -74,8 +84,6 @@ function PlaylistTemplate(props){
 
         props.onClose();
     }
-
-
     return (
         <Modal
             {...props}
@@ -99,7 +107,7 @@ function PlaylistTemplate(props){
                     }}>
                     <img
                         alt={"img not found"}
-                        src={props.currentcover===undefined?cover===""?defaultImg:cover:props.currentcover}
+                        src={cover===""?defaultImg:cover}
                         width={300}
                         height={300}
                         style={{
@@ -158,7 +166,7 @@ function PlaylistTemplate(props){
                 {/*<hr/>*/}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={props.onClose}>Cancel</Button>
+                <Button variant="danger" onClick={()=>handelCancel()}>Cancel</Button>
                 { props.type === 'new'? (<Button onClick={()=>{handleNewPlaylist(cover)}}>New</Button>):(<></>)}
                 { props.type === 'edit'? (<Button onClick={()=>{handleEditPlaylist(cover, props._id)}}>Update</Button>):(<></>)}
             </Modal.Footer>

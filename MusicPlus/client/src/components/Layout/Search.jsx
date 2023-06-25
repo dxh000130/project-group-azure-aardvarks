@@ -9,14 +9,13 @@ import Playlist from "../Playlist/Playlist.jsx";
 
 export default function Search(){
 
-
+    const {userDetail} = useContext(UserContext);
     const Navigate = useNavigate();
     const [inputValue, setInputValue] = useState('');
     const {addToast} = useContext(NotificationContext);
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
-
     const handleSearch=()=>{
         if (inputValue !== ''){
             Navigate(`/search?keyword=${inputValue}`);
@@ -51,11 +50,12 @@ export default function Search(){
 
                 </div>
             </Row>
-            <Row>
-                <div className="wrap mt-4 mb-4">
-                    <Link to={'/preference'}><button className="button">Random Recommendation</button></Link>
-                </div>
-            </Row>
+            {userDetail.username===undefined?(<></>):(<Row>
+                    <div className="wrap mt-4 mb-4">
+                        <Link to={'/preference'}><button className="button">Random Recommendation</button></Link>
+                    </div>
+                </Row>)}
+
             <hr/>
             <Row>
                 <Playlist/>
